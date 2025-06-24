@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  wordpress:
+    image: wordpress:latest  # Apache＋PHP入り公式イメージ
+    ports:
+      - "8000:80"            # ホスト8000 → コンテナ80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:latest    # MariaDB公式イメージ
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  wordpress_data: {}
+  db_data: {}
